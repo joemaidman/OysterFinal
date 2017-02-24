@@ -10,7 +10,7 @@ describe Station do
     it 'it has a #name' do
       expect(station.name).to eq(name)
     end
-    it 'it provides a #zone' do
+    it 'it has a #zone' do
       expect(station.zone).to eq(zone)
     end
   end

@@ -5,29 +5,22 @@ class Journey
 
   attr_reader :journey
 
-  def initialize
+  def initialize(station)
     @journey = {}
-    @in_journey = false
+    @journey[:entry] = station
   end
 
-  def start_journey(entry_station)
-    @journey[:entry] = entry_station
-    @in_journey = true
-  end
-
-  def end_journey(exit_station)
-    @journey[:exit] = exit_station
-    @in_journey = false
+  def end_journey(station)
+    @journey[:exit] = station
   end
 
   def fare
-    return PENALTY_FARE if !@journey[:entry] || !@journey[:exit]
-    return MINIMUM_FARE
+    complete? ? MINIMUM_FARE : PENALTY_FARE
   end
 
-
-  def in_journey?
-    @in_journey
+  def complete?
+   !!@journey[:entry] && !!@journey[:exit]
+     
   end
 
 end

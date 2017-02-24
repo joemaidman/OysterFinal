@@ -1,3 +1,6 @@
+require_relative 'journey'
+require_relative 'station'
+
 class Oystercard
 
   LIMIT = 90
@@ -8,7 +11,7 @@ class Oystercard
   def initialize
     @balance = 0
     @all_journeys = []
-    @journey = Journey.new
+    @journey = Journey.new(nil)
   end
 
   def top_up(amount)
@@ -19,15 +22,15 @@ class Oystercard
 
   def touch_in(station)
     raise "Insufficient funds, current balance is £#{@balance}" unless sufficient_funds?
-    deduct(@journey.fare) if @journey.in_journey?
-    @journey.start_journey(station)
+    deduct(@journey.fare) if @journey.journey[:entry] != nil
+    @journey = Journey.new(station)
   end
 
   def touch_out(station)
     @journey.end_journey(station)
-    @all_journeys << @journey.journey
     deduct(@journey.fare)
-    @journey = Journey.new
+    @all_journeys << @journey.journey
+    @journey = Journey.new(nil)
   end
 
   private

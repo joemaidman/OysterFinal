@@ -2,9 +2,9 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:card) {described_class.new}
-  let(:top_up_amount) { 20 }
-  let(:entry_station) { double :station}
-  let(:exit_station) { double :station}
+  let(:top_up_amount) {20}
+  let(:entry_station) {double :station}
+  let(:exit_station) {double :station}
 
   describe "#balance", :balance do
     it "has an initial balance of zero" do
@@ -17,9 +17,9 @@ describe Oystercard do
       card.top_up(top_up_amount)
       expect(card.balance).to eq(top_up_amount)
     end
-    it "cannot increase the balance above the limit" do
-      over_limit = described_class::LIMIT + 1
-      expect{card.top_up(over_limit)}.to raise_error "Maximum balance of #{Oystercard::LIMIT} exceeded"
+    it "raises an error if the maximum balance is exceeded" do
+      card.top_up(Oystercard::LIMIT)
+      expect{card.top_up(1)}.to raise_error("Maximum balance of #{Oystercard::LIMIT} exceeded")
     end
   end
 
